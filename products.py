@@ -101,3 +101,24 @@ class Product:
         else:
             raise ValueError('Not enough quantity in stock')
 
+
+class NonStockedProduct(Product):
+    def __init__(self, name: str, price: float):
+        super().__init__(name, price, quantitiy=0)
+
+    def set_quantity(self, quantity: int) -> None:
+        raise ValueError("Cannot set quantity to non-stocked product")
+
+    def buy(self, purchase_quantity) -> float:
+        if purchase_quantity <= 0:
+            raise ValueError("Quantity to buy must be greater than zero")
+        return self.price * purchase_quantity
+
+    def show(self) -> str:
+        return f"{self.name}, Price: ${self.price:,.2f}, Non-stocked Item"
+
+
+
+
+class LimitedProduct:
+    pass
