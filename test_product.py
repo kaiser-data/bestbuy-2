@@ -1,25 +1,28 @@
 import pytest
-
 from products import Product
 
 
-def test_create_normal_product():
-    try:
-        product = Product(name="MacBook Air M2", price=999.99, quantity=50)
-    except Exception as e:
-        pytest.fail(f"Product creation failed with exception: {e}")
+# Fixture for a valid product
+@pytest.fixture
+def valid_product():
+    return Product(name="MacBook Air M2", price=1450, quantity=100)
 
-    assert product.name == "MacBook Air M2"
-    assert product.price == 999.99
-    assert product.quantity == 50
-    assert product.is_active() is True
+
+def test_create_normal_product(valid_product):
+    """
+    Test that a valid product is created successfully.
+    """
+    assert valid_product.name == "MacBook Air M2"
+    assert valid_product.price == 1450
+    assert valid_product.quantity == 100
+    assert valid_product.is_active() is True
 
 
 # Test creating a product with invalid details using parametrized tests
 @pytest.mark.parametrize("name, price, quantity", [
-    ("", 999.99, 50),
-    ("MacBook Air M2", -999.99, 50),
-    ("MacBook Air M2", 999.99, -1),
+    ("", 1450, 100),
+    ("MacBook Air M2", -1450, 100),
+    ("MacBook Air M2", 1450, -1),
 ])
 def test_create_invalid_product(name, price, quantity):
     """
@@ -33,25 +36,33 @@ def test_create_invalid_product(name, price, quantity):
     with pytest.raises(ValueError):
         Product(name=name, price=price, quantity=quantity)
 
-def test_product_becomes_inactive_when_quantity_zero():
-    product = Product(name="MacBook Air M2", price=999.99, quantity=100)
 
-    product.set_quantity(product.quantity - product.quantity)
-    assert product.is_active() is False
+def test_product_becomes_inactive_when_quantity_zero(valid_product):
+    """
+    Test that a product becomes inactive after its entire quantity is purchased.
+    """
+    valid_product.set_quantity(quantity=0)
+    assert valid_product.is_active() is False
 
-def test_purchase_quantity_and_total_price():
-    product = Product(name="MacBook Air M2", price=1000, quantity=100)
+
+def test_buy_reduces_quantity_and_returns_total_price(valid_product):
+    """
+    Test that the `buy` method reduces quantity and returns the correct total price.
+    """
     purchase_quantity = 3
-    total_price = product.buy(purchase_quantity)
+    total_price = valid_product.buy(purchase_quantity)
 
-    assert product.quantity == 97
-    assert  total_price == 3000
+    assert valid_product.quantity == 97
+    assert total_price == 4350
 
 
-def test_buy_larger_quantity_than_stock_raises_exception():
-    product = Product(name="Test Product", price=100.0, quantity=5)
+def test_buy_larger_quantity_than_stock_raises_exception(valid_product):
+    """
+    Test that attempting to buy more than available stock raises a ValueError.
+    """
+    purchase_quantity = valid_product.quantity + 1
 
     with pytest.raises(ValueError, match="Not enough quantity in stock"):
-        product.buy(10)
+        valid_product.buy(purchase_quantity)
 
 
