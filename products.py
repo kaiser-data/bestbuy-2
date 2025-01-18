@@ -120,5 +120,15 @@ class NonStockedProduct(Product):
 
 
 
-class LimitedProduct:
-    pass
+class LimitedProduct(Product):
+    def __init__(self, name: str, price: float, quantity: int, maximum: int):
+        super().__init__(name, price, quantity)
+        self.maximum = maximum
+
+    def buy(self, purchase_quantity) -> float:
+        if purchase_quantity <= self.maximum:
+            raise ValueError(f"Cannot buy more than {self.maximum} of {self.name}.")
+        return super().buy(purchase_quantity)
+
+    def show(self) -> str:
+        return f"{self.name}, Price: ${self.price:,.2f}, Limited Item maximum {self.maximum} per order"
