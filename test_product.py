@@ -34,8 +34,17 @@ def test_create_invalid_product(name, price, quantity):
         Product(name=name, price=price, quantity=quantity)
 
 def test_product_becomes_inactive_when_quantity_zero():
-    product = Product(name="MacBook Air M2", price=999.99, quantity=0)
+    product = Product(name="MacBook Air M2", price=999.99, quantity=100)
 
     product.set_quantity(product.quantity - prduct.quantity)
     assert product.is_active() is False
+
+def test_purchase_quantity_and_total_price():
+    product = Product(name="MacBook Air M2", price=1000, quantity=100)
+    purchase_quantity = 3
+    total_price = product.price * product.quantity
+
+    assert product.quantity == 7
+    assert  total_price == 3000
+
 
