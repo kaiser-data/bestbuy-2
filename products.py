@@ -118,9 +118,8 @@ class NonStockedProduct(Product):
         return f"{self.name}, Price: ${self.price:,.2f}, Non-stocked Item"
 
 
-
-
 class LimitedProduct(Product):
+
     def __init__(self, name: str, price: float, quantity: int, maximum: int):
         super().__init__(name, price, quantity)
         self.maximum = maximum
