@@ -28,6 +28,7 @@ class Product:
         self.price = float(price)
         self.quantity = int(quantity)
         self.active = True
+        self.promotion = None
 
     def get_quantity(self) -> float:
         """
@@ -78,7 +79,8 @@ class Product:
         Returns:
             str: A string containing the product's name, price, and quantity.
         """
-        return f"{self.name}, Price: ${self.price:,.2f}, Quantity: {self.quantity}"
+        promotion_info = f" (Promotion: {self.promotion.name})" if self.promotion else ""
+        return f"{self.name}, Price: ${self.price:,.2f}, Quantity: {self.quantity}{promotion_info}"
 
     def buy(self, purchase_quantity) -> float:
         """
@@ -97,14 +99,22 @@ class Product:
             raise ValueError('Quantity to buy must be greater than zero')
         if self.quantity >= purchase_quantity:
             self.quantity -= purchase_quantity
+            if self.promotion:
+                return self.promotion.apply_promotion(self, purchase_quantity)
             return self.price * purchase_quantity
         else:
             raise ValueError('Not enough quantity in stock')
 
+    def set_promotion(self, promotion):
+        self.promotion = promotion
+
+    def get_promotion(self):
+        return self.promotion
+
 
 class NonStockedProduct(Product):
     def __init__(self, name: str, price: float):
-        super().__init__(name, price, quantitiy=0)
+        super().__init__(name, price, quantity=0)
 
     def set_quantity(self, quantity: int) -> None:
         raise ValueError("Cannot set quantity to non-stocked product")
