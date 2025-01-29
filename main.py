@@ -47,7 +47,7 @@ class StoreMenu:
         products = self.store_obj.get_all_products()
         print("------")
         for index, product in enumerate(products, start=1):
-            print(f"{index}. {product.show()}")
+            print(f"{index}. {product}")
         print("------")
 
     def total_amount(self) -> None:
@@ -134,7 +134,7 @@ def main() -> None:
     # Add promotions to products
     product_list[0].set_promotion(second_half_price)
     product_list[1].set_promotion(third_one_free)
-    product_list[3].set_promotion(thirty_percent)
+    product_list[2].set_promotion(thirty_percent)
 
 
     best_buy = Store(product_list)

@@ -72,7 +72,7 @@ class Product:
         """
         self.active = False
 
-    def show(self) -> str:
+    def __str__(self) -> str:
         """
         Gets a string representation of the product.
 
@@ -124,7 +124,7 @@ class NonStockedProduct(Product):
             raise ValueError("Quantity to buy must be greater than zero")
         return self.price * purchase_quantity
 
-    def show(self) -> str:
+    def __str__(self) -> str:
         return f"{self.name}, Price: ${self.price:,.2f}, Non-stocked Item"
 
 
@@ -139,5 +139,5 @@ class LimitedProduct(Product):
             raise ValueError(f"Cannot buy more than {self.maximum} of {self.name}.")
         return super().buy(purchase_quantity)
 
-    def show(self) -> str:
+    def __str__(self) -> str:
         return f"{self.name}, Price: ${self.price:,.2f}, Limited Item maximum {self.maximum} per order"
