@@ -1,17 +1,9 @@
-"""
-This script defines the main function to run a store menu system,
-allowing users to interact with a store by  via Storemenu class via terminal user input.
-"""
-
 import sys
 
 #Loads Store Class and Product Class
 from products import Product, NonStockedProduct, LimitedProduct
 from promotions import PercentDiscount, SecondHalfPrice, ThirdOneFree
 from store import Store
-
-from typing import List, Tuple
-from products import Product
 
 
 class StoreMenu:
@@ -96,7 +88,6 @@ class StoreMenu:
         """
         Exits the store menu system.
         """
-        import sys
         sys.exit()
 
     def menu_logic(self, user_input: str) -> None:

@@ -1,6 +1,6 @@
 class Product:
     """
-    Represents a product with a name, price, and quantity.
+    Represents a product with a name, price, and quantity. Also handles promotions.
     """
 
     def __init__(self, name: str, price: float, quantity: int):
