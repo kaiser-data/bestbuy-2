@@ -2,40 +2,57 @@ from abc import ABC, abstractmethod
 from products import Product, NonStockedProduct, LimitedProduct
 from store import Store
 
+
 class Promotion(ABC):
-    def __init__(self, name):
+    """Abstract base class for promotions."""
+
+    def __init__(self, name: str):
+        """Initializes a promotion with a name."""
         self.name = name
 
-        @abstractmethod
-        def apply_promotion(self,product, quantity):
-            pass
+    @abstractmethod
+    def apply_promotion(self, product: Product, quantity: int) -> float:
+        """Applies the promotion to a product purchase."""
+        pass
+
 
 class PercentDiscount(Promotion):
-    def __init__(self, name, percent):
+    """Applies a percentage discount to the product price."""
+
+    def __init__(self, name: str, percent: float):
         super().__init__(name)
         self.percent = percent
 
-    def apply_promotion(self, product, quantity):
+    def apply_promotion(self, product: Product, quantity: int) -> float:
+        """Calculates the price after applying the percentage discount."""
         discount = product.price * (self.percent / 100)
         return (product.price - discount) * quantity
 
 
 class SecondHalfPrice(Promotion):
-    def __init__(self, name):
+    """Applies a promotion where the second product is half-price."""
+
+    def __init__(self, name: str):
         super().__init__(name)
 
-    def apply_promotion(self, product, quantity):
+    def apply_promotion(self, product: Product, quantity: int) -> float:
+        """Calculates the total price using the second-half price promotion."""
         full_price_items = quantity // 2 + quantity % 2
         half_price_items = quantity // 2
         return full_price_items * product.price + half_price_items * (product.price / 2)
 
+
 class ThirdOneFree(Promotion):
-    def __init__(self, name):
+    """Applies a promotion where every third product is free."""
+
+    def __init__(self, name: str):
         super().__init__(name)
 
-    def apply_promotion(self, product, quantity):
+    def apply_promotion(self, product: Product, quantity: int) -> float:
+        """Calculates the total price using the third-one-free promotion."""
         chargeable_items = quantity - (quantity // 3)
         return chargeable_items * product.price
+
 
 if __name__ == '__main__':
 
@@ -58,7 +75,7 @@ if __name__ == '__main__':
 
     # Test products and promotions
     for product in product_list:
-        print(product.show())
+        print(str(product))
 
     # Simulate buying with promotions
     print("\nPurchase Scenarios:")
